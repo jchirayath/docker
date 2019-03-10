@@ -45,13 +45,13 @@ else
     exit 1
 fi
 
-# Create Docker Tar.gz
-STAGE="Building Docker Tar.gz - $CONTAINER_NAME"
-echo $STAGE
-if (docker save $CONTAINER_NAME | gzip > $CONTAINER_NAME.gz)
-then
-    echo "Completed $STAGE"
-else
-    error_exit "$LINENO: Failed $STAGE! Aborting."
-    exit 1
-fi
+## Create Docker Tar.gz
+#STAGE="Building Docker Tar.gz - $CONTAINER_NAME"
+#echo $STAGE
+#if (docker save $CONTAINER_NAME | gzip > $CONTAINER_NAME.gz)
+#then
+#    echo "Completed $STAGE"
+#else
+#    error_exit "$LINENO: Failed $STAGE! Aborting."
+#    exit 1
+#fi

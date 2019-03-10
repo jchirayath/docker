@@ -13,10 +13,11 @@ error_exit()
 
 
 # kafka.sh : Builid Kafka
-CONTAINER_NAME=kafka-docker
+FOLDER_NAME=kafka-docker
+CONTAINER_NAME=kafka
 
 # Define Working Direcotry
-WORKDIR=$HOME/docker/$CONTAINER_NAME
+WORKDIR=$HOME/docker/$FOLDER_NAME
 
 # Get HostName
 MY_HOST=`hostname`
@@ -36,7 +37,7 @@ cd $WORKDIR
 # Build docker container
 STAGE="Building Docker Container - $CONTAINER_NAME"
 echo $STAGE
-if (docker build -t edp/$CONTAINER_NAME .)
+if (docker build -t $CONTAINER_NAME .)
 then
     echo "Completed $STAGE"
 else
@@ -44,13 +45,13 @@ else
     exit 1
 fi
 
-# Create Docker Tar.gz
-STAGE="Building Docker Tar.gz - $CONTAINER_NAME"
-echo $STAGE
-if (docker save edp/$CONTAINER_NAME | gzip > $CONTAINER_NAME..gz)
-then
-    echo "Completed $STAGE"
-else
-    error_exit "$LINENO: Failed $STAGE! Aborting."
-    exit 1
-fi
+## Create Docker Tar.gz
+#STAGE="Building Docker Tar.gz - $CONTAINER_NAME"
+#echo $STAGE
+#if (docker save edp/$CONTAINER_NAME | gzip > $CONTAINER_NAME..gz)
+#then
+#    echo "Completed $STAGE"
+#else
+#    error_exit "$LINENO: Failed $STAGE! Aborting."
+#    exit 1
+#fi
