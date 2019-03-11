@@ -152,7 +152,7 @@ build() {
         echo "Building Docker container $CONTAINER_NAME"
         cd $CONTAINER_DIR
         #CMD_STAT=$(docker build -t $CONTAINER_NAME . 2>&1)
-        CMD_STAT=$(docker --build-arg https_proxy build -t $CONTAINER_NAME:$CONTAINER_TAG . )
+        CMD_STAT=$(docker build --build-arg http_proxy --build-arg https_proxy -t $CONTAINER_NAME:$CONTAINER_TAG . )
         ERROR_STAT=$?
         if [ $ERROR_STAT -eq 0 ] 
         then
