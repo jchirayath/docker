@@ -16,7 +16,8 @@ MY_IP=`curl -s ifconfig.me`
 MY_IP=10.4.1.150
 
 # Define BASEDIR 
-BASE_DIR=$HOME/docker
+#BASE_DIR=$HOME/docker
+BASE_DIR=$(pwd)
 
 # Define the NAME of the container 
 CONTAINER_NAME=edp/kafka

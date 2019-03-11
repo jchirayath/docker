@@ -27,14 +27,6 @@ usage ()
   exit
 }
 
-# Function: error_exit - Generic Error handler
-error_exit()
-{
-# Exit due to fatal program error & Display passed parameter
-    echo "${PROGNAME}: ${1:-"Unknown Error Occurred !!"}" 1>&2
-    exit 1
-}
-
 # Function: start - Generic start handler
 start() {
     
@@ -160,7 +152,7 @@ build() {
         echo "Building Docker container $CONTAINER_NAME"
         cd $CONTAINER_DIR
         #CMD_STAT=$(docker build -t $CONTAINER_NAME . 2>&1)
-        CMD_STAT=$(docker build -t $CONTAINER_NAME:$CONTAINER_TAG . )
+        CMD_STAT=$(docker --build-arg https_proxy build -t $CONTAINER_NAME:$CONTAINER_TAG . )
         ERROR_STAT=$?
         if [ $ERROR_STAT -eq 0 ] 
         then
@@ -248,6 +240,14 @@ push() {
         echo $CMD_STAT
         return 0
      fi
+}
+
+# Function: error_exit - Generic Error handler
+error_exit()
+{
+# Exit due to fatal program error & Display passed parameter
+    echo "${PROGNAME}: ${1:-"Unknown Error Occurred !!"}" 1>&2
+    exit 1
 }
 
 # Main Program starts here
