@@ -15,19 +15,25 @@ usage ()
   exit
 }
 
+# Define the Application scripts
 APP1=zookeeper.sh
 APP2=kafka.sh
 APP3=kafka-manager.sh
 
+# Function app_call: Function to call services
 app_call ()
 {
 ARG1=$1
 
-./$APP1 $1
-./$APP2 $1
-./$APP3 $1
+if [ -f $APP1 ] && [ -f $APP2 ] && [ -f $APP3 ]
+then
+    ./$APP1 $1
+    ./$APP2 $1
+    ./$APP3 $1
+else
+    echo "One of the required startup files are missing !"
+fi
 }
-    
 
 # Main Program starts here
 # Check variable condition
@@ -100,45 +106,3 @@ esac
 
 exit 0
 # End of Program
-
-
-# Get Current HostName
-MY_HOST=`hostname`
-
-# Get HOST Number Last digit of the Hostname
-MY_NUM="${MY_HOST: -1}"
-
-# Get IP Address
-MY_IP=`curl -s ifconfig.me`
-MY_IP=10.4.1.150
-
-# Define BASEDIR 
-BASE_DIR=$HOME/docker
-
-# Define the NAME of the container 
-CONTAINER_NAME=edp/zookeeper
-CONTAINER_ALIAS=zookeeper
-CONTAINER_TAG=1.0
-# Define folder for container files
-CONTAINER_FOLDER=zookeeper-docker
-
-# Build Working Direcotry based on BASE_DIR
-WORK_DIR=$BASE_DIR/$CONTAINER_NAME
-# Build Container Folder
-CONTAINER_DIR=$BASE_DIR/$CONTAINER_FOLDER
-
-# Docker Start Options
-DSTART_OPTIONS="-p 2181:2181"
-
-# Docker Start Options
-D_RESTART_ON="False"
-REPOSITORY="cw2edpldvapp004:5000"
-
-## Source Docker_Common Functions
-if [ -f docker_common.sh ]
-then
-   . docker_common.sh
-else
-   echo "Docker Common was not found ! - Please update the path to file"
-   exit 1
-fi
