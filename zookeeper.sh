@@ -78,7 +78,7 @@ start() {
     fi
     
     echo "Starting Docker Container $CONTAINER_NAME"   
-    CMD_STAT=$(docker run -d --name $CONTAINER_ALIAS $CONTAINER_NAME:$CONTAINER_TAG $DSTART_OPTIONS)
+    CMD_STAT=$(docker run -d $DSTART_OPTIONS --name $CONTAINER_ALIAS $CONTAINER_NAME:$CONTAINER_TAG)
     if [[ -z $CMD_STAT ]]
     then
         echo "Docker $CONTAINER_NAME FAILED to start!"

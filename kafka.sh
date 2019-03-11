@@ -31,10 +31,12 @@ MY_HOST=`hostname`
 MY_NUM="${MY_HOST: -1}"
 
 # Get IP Address
-MY_IP=`curl -s ifconfig.me`
+#MY_IP=`curl -s ifconfig.me`
+MY_IP=192.168.1.21
 
 # Docker Start Options
-DSTART_OPTIONS='-p 9092:9092 -e KAFKA_ADVERTISED_HOST_NAME=$MY_IP -e KAFKA_ZOOKEEPER_CONNECT=$MY_IP:2181 -v /var/run/docker.sock:/var/run/docker.sock'
+#DSTART_OPTIONS='-p 9092:9092 -e KAFKA_ADVERTISED_HOST_NAME=$MY_IP -e KAFKA_ZOOKEEPER_CONNECT=$MY_IP:2181 -v /var/run/docker.sock:/var/run/docker.sock'
+DSTART_OPTIONS='-p 9092:9092 -e KAFKA_ADVERTISED_HOST_NAME='$MY_IP' -e KAFKA_ZOOKEEPER_CONNECT='$MY_IP':2181 -v /var/run/docker.sock:/var/run/docker.sock'
 # Docker Start Options
 #Cat << EOF >> ${DSTART_OPTIONS}
 #-p 9092:9092 -e KAFKA_ADVERTISED_HOST_NAME=$MY_IP -e KAFKA_ZOOKEEPER_CONNECT=$MY_IP:2181 -v #/var/run/docker.sock:/var/run/docker.sock
