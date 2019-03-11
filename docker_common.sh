@@ -57,7 +57,7 @@ start() {
         return 0
     else
         echo "Docker $CONTAINER_NAME is running!"
-        echo $CMD_STAT\m
+        echo $CMD_STAT
         return 1
     fi
 }
@@ -74,14 +74,13 @@ status() {
         return 1
     else
         echo "Docker $CONTAINER_NAME is running or image file exits!"
-        echo $CMD_STAT
         return 0
     fi
 }
 
 # Function: stop - Generic start handler
 stop() {
-    
+
     # Run Status function
     if  (status)
     then 
@@ -96,7 +95,7 @@ stop() {
     then
         # Disable Restart Service
         echo "Sending Restart=No for restarting service"
-        docker update --restart=no $CONTAINER_NAME
+        docker update --restart=no $CONTAINER_NAME:$CONTAINER_TAG
         echo "Waiting a bit for stoping restart service"
         Sleep 10  
     else
@@ -104,23 +103,25 @@ stop() {
     fi
     
     echo "Stopping Docker container $CONTAINER_NAME"
-    CMD_STAT=$(docker stop $CONTAINER_NAME 2>&1)
+    CMD_STAT=$(docker stop $CONTAINER_ALIAS 2>&1)
     ERROR_STAT=$?
     if [ $ERROR_STAT -eq 0 ] 
     then
-        echo "Docker $CONTAINER_NAME is not running or does not exist!"
-        return 1       
-    else
         echo "Docker $CONTAINER_NAME Stopped!"  
         # Function remover Docker Container
         remove
         return 0
+    else
+        echo "Docker $CONTAINER_NAME is not running or does not exist!"
+        echo $CMD_STAT
+        return 1       
     fi
 }
 
 # Function: remove - Generic start handler
 remove() {
-    echo "Deleteing Docker container $CONTAINER_NAME if exists"
+
+    echo "Removing Docker container $CONTAINER_NAME if exists"
     #CMD_STAT=$(docker rm $CONTAINER_NAME:$CONTAINER_TAG  2>&1)
     CMD_STAT=$(docker rm $CONTAINER_ALIAS  2>&1)
     ERROR_STAT=$?
@@ -129,7 +130,8 @@ remove() {
         echo "Docker $CONTAINER_NAME removed!"
         return 0
     else
-        echo "Docker $CONTAINER_NAME does not exist!"
+        echo "Docker $CONTAINER_NAME removal failed or does not exist!"
+        echo $CMD_STAT
         return 1
     fi
 }
@@ -144,6 +146,7 @@ rmi() {
         return 0
     else
         echo "Docker IMAGE for $CONTAINER_NAME does not exist!"
+        echo $CMD_STAT
         return 1
     fi
 }
@@ -158,7 +161,8 @@ build() {
         cd $CONTAINER_DIR
         #CMD_STAT=$(docker build -t $CONTAINER_NAME . 2>&1)
         CMD_STAT=$(docker build -t $CONTAINER_NAME:$CONTAINER_TAG . )
-        if [[ $CMD_STAT ]] 
+        ERROR_STAT=$?
+        if [ $ERROR_STAT -eq 0 ] 
         then
             echo "Contianer build of $CONTAINER_NAME Completed!"       
             return 0
@@ -169,6 +173,7 @@ build() {
         fi
      else
          echo "Contianer build directory $CONTAINER_DIR does not exit!"
+         echo $CMD_STAT
          return 1
      fi
 }
@@ -176,24 +181,26 @@ build() {
 # Function: image - Generic image creation handler
 image() {
     echo "Exporting container $CONTAINER_NAME"
-    CMD_STAT=$(docker image $CONTAINER_NAME | grep $CONTAINER_NAME 2>&1)
-    if [[ -z $CMD_STAT ]] 
+    CMD_STAT=$(docker images $CONTAINER_NAME | grep $CONTAINER_NAME 2>&1)
+    ERROR_STAT=$?
+    if [ $ERROR_STAT -eq 0 ] 
     then 
-        echo "Contianer $CONTAINER_NAME does not exist!"       
-        return 1
-    else
         echo "Creating .gz image of $CONTAINER_NAME"
-        CMD_STAT=$(docker save $CONTAINER_NAME | gzip > $CONTAINER_NAME.gz)
+        CMD_STAT=$(docker save $CONTAINER_NAME:$CONTAINER_TAG | gzip > $CONTAINER_ALIAS.gz)
         if [[ -z $CMD_STAT ]]
         then
-           echo "Completed building $CONTAINER_NAME"
+           echo "Completed building $CONTAINER_ALIAS ZIP file"
            return 0
         else
-            echo "Contianer export $CONTAINER_NAME Failed!"
+            echo "Contianer export $CONTAINER_ALIAS ZIP file Failed!"
             error_exit "$LINENO"
             return 1
         fi
-     fi
+    else  
+        echo "Contianer $CONTAINER_NAME does not exist!"
+        echo $CMD_STAT
+        return 1
+    fi
 }
 
 
@@ -215,6 +222,7 @@ pull() {
             return 1
         else
             echo "Contianer $CONTAINER_NAME cout NOT be pulled from $REPOSITORY!"
+            echo $CMD_STAT
         fi
      fi
 }
@@ -237,6 +245,7 @@ push() {
         return 1
      else
         echo "Contianer $CONTAINER_NAME could NOT be pushed to $REPOSITORY!"
+        echo $CMD_STAT
         return 0
      fi
 }
@@ -292,7 +301,15 @@ case "$1" in
             # Mulitple  Functions
             stop
             remove
+            #rmi
+            [ -f $CONTAINER_ALIAS.gz ] && rm $CONTAINER_ALIAS.gz 
+            ;;
+      cleanall)
+            # Mulitple  Functions
+            stop
+            remove
             rmi
+            [ -f $CONTAINER_ALIAS.gz ] && rm $CONTAINER_ALIAS.gz 
             ;;
        *)
             # Not valid Parameter Passed

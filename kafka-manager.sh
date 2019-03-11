@@ -13,7 +13,7 @@ MY_NUM="${MY_HOST: -1}"
 
 # Get IP Address
 MY_IP=`curl -s ifconfig.me`
-#MY_IP=192.168.1.21
+MY_IP=10.4.1.150
 
 # Define BASEDIR 
 BASE_DIR=$HOME/docker
@@ -35,7 +35,8 @@ D_RESTART_ON="False"
 REPOSITORY="cw2edpldvapp004:5000"
 
 # Docker Start Options
-DSTART_OPTIONS=""
+#DSTART_OPTIONS='-p 9092:9092 -e KAFKA_ADVERTISED_HOST_NAME='$MY_IP' -e KAFKA_ZOOKEEPER_CONNECT='$MY_IP':2181 -v /var/run/docker.sock:/var/run/docker.sock'
+DSTART_OPTIONS='-p 9000:9000 -e ZK_HOSTS='$MY_IP':2181 -e APPLICATION_SECRET=letmein -e KM_ARGS=-Djava.net.preferIPv4Stack=true'
 
 ## Source Docker_Common Functions
 if [ -f docker_common.sh ]

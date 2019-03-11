@@ -13,6 +13,7 @@ MY_NUM="${MY_HOST: -1}"
 
 # Get IP Address
 MY_IP=`curl -s ifconfig.me`
+MY_IP=10.4.1.150
 
 # Define BASEDIR 
 BASE_DIR=$HOME/docker

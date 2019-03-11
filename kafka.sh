@@ -1,6 +1,6 @@
 #!/bin/bash
 # Script to Start and Stop Docker Containers
-# Name: kafka
+# Name: kafka.sh
 
 ## Global Variables
 PROGNAME=$(basename $0)
@@ -13,7 +13,7 @@ MY_NUM="${MY_HOST: -1}"
 
 # Get IP Address
 MY_IP=`curl -s ifconfig.me`
-#MY_IP=192.168.1.21
+MY_IP=10.4.1.150
 
 # Define BASEDIR 
 BASE_DIR=$HOME/docker
