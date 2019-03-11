@@ -25,7 +25,7 @@ app_call ()
 {
 ARG1=$1
 
-if [ -f $APP1 ] && [ -f $APP2 ] && [ -f $APP3 ]
+if [ -e $APP1 ] && [ -e $APP2 ] && [ -e $APP3 ]
 then
     ./$APP1 $1
     ./$APP2 $1
