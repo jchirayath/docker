@@ -12,17 +12,17 @@ MY_HOST=`hostname`
 MY_NUM="${MY_HOST: -1}"
 
 # Get IP Address
-MY_IP=`curl -s ifconfig.me`
-MY_IP=10.4.1.150
+#MY_IP=`curl -s ifconfig.me`
+MY_IP=10.23.53.85
 
 # Define BASEDIR 
 #BASE_DIR=$HOME/docker
 BASE_DIR=$(pwd)
 
 # Define the NAME of the container 
-CONTAINER_NAME=edp/kafka
+CONTAINER_NAME=mufgdev/apache-kafka
 CONTAINER_ALIAS=kafka
-CONTAINER_TAG=1.0
+CONTAINER_TAG=2.1.1
 # Define folder for container files
 CONTAINER_FOLDER=kafka-docker
 

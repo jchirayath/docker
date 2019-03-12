@@ -12,17 +12,17 @@ MY_HOST=`hostname`
 MY_NUM="${MY_HOST: -1}"
 
 # Get IP Address
-MY_IP=`curl -s ifconfig.me`
-MY_IP=10.4.1.150
+#MY_IP=`curl -s ifconfig.me`
+MY_IP=10.23.53.85
 
 # Define BASEDIR 
 #BASE_DIR=$HOME/docker
 BASE_DIR=$(pwd)
 
 # Define the NAME of the container 
-CONTAINER_NAME=edp/zookeeper
+CONTAINER_NAME=mufgdev/zookeper
 CONTAINER_ALIAS=zookeeper
-CONTAINER_TAG=1.0
+CONTAINER_TAG=latest
 # Define folder for container files
 CONTAINER_FOLDER=zookeeper-docker
 
@@ -32,11 +32,11 @@ WORK_DIR=$BASE_DIR/$CONTAINER_NAME
 CONTAINER_DIR=$BASE_DIR/$CONTAINER_FOLDER
 
 # Docker Start Options
-DSTART_OPTIONS="-p 2181:2181"
+DSTART_OPTIONS="-p 0.0.0.0:2181:2181"
 
 # Docker Start Options
 D_RESTART_ON="False"
-REPOSITORY="cw2edpldvapp004:5000"
+#REPOSITORY="cw2edpldvapp004:5000"
 
 ## Source Docker_Common Functions
 if [ -f docker_common.sh ]
