@@ -37,7 +37,7 @@ REPOSITORY="cw2edpldvapp004:5000"
 
 # Docker Start Options
 #DSTART_OPTIONS='-p 9092:9092 -e KAFKA_ADVERTISED_HOST_NAME=$MY_IP -e KAFKA_ZOOKEEPER_CONNECT=$MY_IP:2181 -v /var/run/docker.sock:/var/run/docker.sock'
-DSTART_OPTIONS='-p 9092:9092 -e KAFKA_ADVERTISED_HOST_NAME='$MY_IP' -e KAFKA_ZOOKEEPER_CONNECT='$MY_IP':2181 -v /var/run/docker.sock:/var/run/docker.sock'
+DSTART_OPTIONS='-p 9020:9092 -e KAFKA_ADVERTISED_HOST_NAME='$MY_IP' -e KAFKA_ZOOKEEPER_CONNECT='$MY_IP':2181 -v /var/run/docker.sock:/var/run/docker.sock'
 
 ## Source Docker_Common Functions
 if [ -f docker_common.sh ]
